@@ -1,0 +1,123 @@
+方式1：继承Thread类
+
+步骤:
+
+1):定义一个类A继承于java.lang.Thread类.
+
+2):在A类中覆盖Thread类中的run方法.
+
+3):我们在run方法中编写需要执行的操作：run方法里的代码,线程执行体.
+
+4):在main方法(线程)中,创建线程对象,并启动线程.
+
+(1)创建线程类对象:                
+
+A类   a  =  new   A类();
+
+(2)调用线程对象的start方法:    
+
+a.start();//启动一个线程
+
+ 
+
+注意:千万不要调用run方法,如果调用run方法好比是对象调用方法,依然还是只有一个线程,并没有开启新的线程.
+
+线程只能启动一次！
+
+创建启动线程实例：
+
+[java] view plain copy
+//1):定义一个类A继承于java.lang.Thread类.  
+class MusicThread extends Thread{  
+    //2):在A类中覆盖Thread类中的run方法.  
+    public void run() {  
+        //3):在run方法中编写需要执行的操作  
+        for(int i = 0; i < 50; i ++){  
+            System.out.println("播放音乐"+i);  
+        }  
+    }  
+}  
+  
+public class ExtendsThreadDemo {  
+    public static void main(String[] args) {  
+          
+        for(int j = 0; j < 50; j ++){  
+            System.out.println("运行游戏"+j);  
+            if(j == 10){  
+                //4):在main方法(线程)中,创建线程对象,并启动线程.  
+                MusicThread music = new MusicThread();  
+                music.start();  
+            }  
+        }  
+    }  
+  
+}  
+
+
+方式2：实现Runnable接口
+
+步骤:
+
+1):定义一个类A实现于java.lang.Runnable接口,注意A类不是线程类.
+
+2):在A类中覆盖Runnable接口中的run方法.
+
+3):我们在run方法中编写需要执行的操作：run方法里的,线程执行体.
+
+4):在main方法(线程)中,创建线程对象,并启动线程.
+
+     (1)创建线程类对象:
+
+     Thread  t = new Thread(new  A());    
+
+     (2)调用线程对象的start方法:
+
+     t.start();
+
+ 
+
+[java] view plain copy
+//1):定义一个类A实现于java.lang.Runnable接口,注意A类不是线程类.  
+class MusicImplements implements Runnable{  
+    //2):在A类中覆盖Runnable接口中的run方法.  
+    public void run() {  
+        //3):在run方法中编写需要执行的操作  
+        for(int i = 0; i < 50; i ++){  
+            System.out.println("播放音乐"+i);  
+        }  
+          
+    }  
+}  
+  
+public class ImplementsRunnableDemo {  
+    public static void main(String[] args) {  
+        for(int j = 0; j < 50; j ++){  
+            System.out.println("运行游戏"+j);  
+            if(j == 10){  
+                //4):在main方法(线程)中,创建线程对象,并启动线程  
+                MusicImplements mi = new MusicImplements();  
+                Thread t = new Thread(mi);  
+                t.start();  
+            }  
+        }  
+    }  
+  
+}  
+
+分析继承方式和实现方式的区别:
+
+继承方式:
+                1):从设计上分析，Java中类是单继承的,如果继承了Thread了,该类就不能再有其他的直接父类了.
+                2):从操作上分析,继承方式更简单,获取线程名字也简单.(操作上,更简单)
+                3):从多线程共享同一个资源上分析,继承方式不能做到.
+实现方式:
+                1):从设计上分析，Java中类可以多实现接口,此时该类还可以继承其他类,并且还可以实现其他接口，设计更为合理.
+                2):从操作上分析,实现方式稍微复杂点,获取线程名字也比较复杂,得使用Thread.currentThread()来获取当前线程的引用.
+
+               3):从多线程共享同一个资源上分析,实现方式可以做到(是否共享同一个资源).
+
+
+
+补充：实现方式获取线程名字：
+
+String name = Thread.currentThread().getName();
